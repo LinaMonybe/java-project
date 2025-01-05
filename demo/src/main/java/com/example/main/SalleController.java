@@ -79,7 +79,7 @@ public class SalleController {
             int capacite = Integer.parseInt(capaciteStr);
             
             // Create a Salle object
-            Salle newSalle = new Salle(nomSalle, capacite);
+            Salle newSalle = new Salle(0,nomSalle, capacite);
             
             // Add the new salle to the database
             salleDAO.add(newSalle);
@@ -133,7 +133,7 @@ private void handleSaveSalle() {
     if (validateInput(nomSalle, capacite)) {
         if (selectedSalle == null) {
             // Add new salle
-            Salle newSalle = new Salle(nomSalle, Integer.parseInt(capacite)); // Assuming capacite is an Integer
+            Salle newSalle = new Salle(0,nomSalle, Integer.parseInt(capacite)); // Assuming capacite is an Integer
             salleDAO.add(newSalle); // Make sure the DAO add method handles saving
         } else {
             // Update existing salle

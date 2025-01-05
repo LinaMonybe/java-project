@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10" style="-fx-background-color: #aDD8E6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.main.TerrainController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Terrain Management System" textFill="#3e4fe5" />
+
+    <TableView id="table" fx:id="terrainTable" prefHeight="400" prefWidth="600" style="-fx-background-color: #f0fffb;" stylesheets="@style.css">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="97.5999755859375" text="ID" />
+            <TableColumn fx:id="colName" prefWidth="299.20001220703125" text="Terrain Name" />
+            <TableColumn fx:id="colType" prefWidth="201.5999755859375" text="Type" />
+        </columns>
+    </TableView>
+
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="btnUpdate" onAction="#handleUpdateTerrain" prefWidth="100" style="-fx-background-color: #ffffff;" text="Update Terrain" />
+        <Button fx:id="btnDelete" onAction="#handleDeleteTerrain" prefWidth="100" style="-fx-background-color: #ffffff;" text="Delete Terrain" />
+        <Button fx:id="btnRefresh" onAction="#handleRefresh" prefWidth="100" style="-fx-background-color: #ffffff;" text="Refresh" />
+    </HBox>
+
+    <VBox alignment="CENTER" spacing="10">
+        <TextField fx:id="txtName" prefWidth="300" promptText="Enter Terrain Name" />
+        <TextField fx:id="txtType" prefWidth="300" promptText="Enter Terrain Type" />
+    </VBox>
+
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="btnSave" onAction="#handleSaveTerrain" prefWidth="100" style="-fx-background-color: #ffffff;" text="Save" />
+        <Button fx:id="btnCancel" onAction="#handleBack" prefWidth="100" style="-fx-background-color: #ffffff;" text="Back to Main" />
+    </HBox>
+</VBox>

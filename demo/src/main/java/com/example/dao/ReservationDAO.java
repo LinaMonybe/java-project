@@ -1,25 +1,27 @@
 package com.example.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.database.DatabaseConnection;
 import com.example.model.Reservation;
-
 
 public class ReservationDAO implements GenericDao<Reservation> {
 
     @Override
     public void add(Reservation entity) {
-        String query = "INSERT INTO reservation (id_user, id_event, id_salle, id_terrain, date_reservation) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query)) {
-            stmt.setInt(1, entity.getIdUser());
+        String query = "INSERT INTO reservation (user_id, event_id , room_id, field_id, reservation_date) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, entity.getIdUser ());
             stmt.setInt(2, entity.getIdEvent());
             stmt.setInt(3, entity.getIdSalle());
             stmt.setInt(4, entity.getIdTerrain());
-            stmt.setString(5, entity.getDateReservation()); // Assuming dateReservation is a String
+            stmt.setString(5, entity.getDateReservation()); 
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -28,18 +30,19 @@ public class ReservationDAO implements GenericDao<Reservation> {
 
     @Override
     public Reservation get(int id) {
-        String query = "SELECT * FROM reservation WHERE id_reservation=?";
+        String query = "SELECT * FROM reservation WHERE id=?";
         Reservation reservation = null;
-        try (PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query)) {
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    int idUser = rs.getInt("id_user");
-                    int idEvent = rs.getInt("id_event");
-                    int idSalle = rs.getInt("id_salle");
-                    int idTerrain = rs.getInt("id_terrain");
-                    String dateReservation = rs.getString("date_reservation");
-                    reservation = new Reservation(id, idUser, idEvent, idSalle, dateReservation);
+                    int idUser  = rs.getInt("user_id");
+                    int idEvent = rs.getInt("event_id");
+                    int idSalle = rs.getInt("room_id");
+                    int idTerrain = rs.getInt("field_id");
+                    String dateReservation = rs.getString("reservation_date");
+                    reservation = new Reservation(id, idUser , idEvent, idSalle, idTerrain, dateReservation);
                 }
             }
         } catch (SQLException e) {
@@ -52,16 +55,17 @@ public class ReservationDAO implements GenericDao<Reservation> {
     public List<Reservation> getAll() {
         List<Reservation> reservations = new ArrayList<>();
         String query = "SELECT * FROM reservation";
-        try (PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query);
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                int id = rs.getInt("id_reservation");
-                int idUser = rs.getInt("id_user");
-                int idEvent = rs.getInt("id_event");
-                int idSalle = rs.getInt("id_salle");
-                int idTerrain = rs.getInt("id_terrain");
-                String dateReservation = rs.getString("date_reservation");
-                reservations.add(new Reservation(id, idUser, idEvent, idSalle, dateReservation));
+                int id = rs.getInt("id");
+                int idUser  = rs.getInt("user_id");
+                int idEvent = rs.getInt("event_id");
+                int idSalle = rs.getInt("room_id");
+                int idTerrain = rs.getInt("field_id");
+                String dateReservation = rs.getString("reservation_date");
+                reservations.add(new Reservation(id, idUser , idEvent, idSalle, idTerrain, dateReservation));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,9 +75,10 @@ public class ReservationDAO implements GenericDao<Reservation> {
 
     @Override
     public void update(Reservation entity) {
-        String query = "UPDATE reservation SET id_user=?, id_event=?, id_salle=?, id_terrain=?, date_reservation=? WHERE id_reservation=?";
-        try (PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query)) {
-            stmt.setInt(1, entity.getIdUser());
+        String query = "UPDATE reservation SET user_id=?, event_id=?, room_id=?, field_id=?, reservation_date=? WHERE id=?";
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, entity.getIdUser ());
             stmt.setInt(2, entity.getIdEvent());
             stmt.setInt(3, entity.getIdSalle());
             stmt.setInt(4, entity.getIdTerrain());
@@ -85,14 +90,16 @@ public class ReservationDAO implements GenericDao<Reservation> {
         }
     }
 
-    @Override
-    public void delete(int id) {
-        String query = "DELETE FROM reservation WHERE id_reservation=?";
-        try (PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+   
+  @Override
+public void delete(int id) {
+    String query = "DELETE FROM reservation WHERE id=?";
+    try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+         PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 }

@@ -7,12 +7,12 @@ public class Utilisateur {
     private String email;
     private String type;
 
-    public Utilisateur(String nom,String prenom,String email,String type) {
-        this.nom =nom;
-        this.prenom= prenom;
-        this.email =email;
-        this.type =type;
-    } 
+    // public Utilisateur(String nom,String prenom,String email,String type) {
+    //     this.nom =nom;
+    //     this.prenom= prenom;
+    //     this.email =email;
+    //     this.type =type;
+    // } 
 
     public Utilisateur(int id , String nom,String prenom,String email,String type) {
         this.id=id;

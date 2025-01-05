@@ -6,9 +6,9 @@ public class Reservation {
     private int idEvent;
     private int idSalle;
     private int idTerrain;
-    private  String dateReservation;
+    private String dateReservation;
 
-    public Reservation(int idReservation, int idUser, int idEvent, int idSalle, String dateReservation) {
+    public Reservation(int idReservation, int idUser, int idEvent, int idSalle,int idTerrain, String dateReservation) {
         this.idReservation = idReservation;
         this.idUser=idUser ;
         this.idEvent=idEvent;

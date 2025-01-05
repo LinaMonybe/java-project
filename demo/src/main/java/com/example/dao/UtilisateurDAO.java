@@ -1,9 +1,13 @@
 package com.example.dao;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.example.model.Utilisateur;
-import com.example.database.DatabaseConnection;
 
 
 public class UtilisateurDAO implements GenericDao<Utilisateur> {
@@ -62,8 +66,7 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
 
         try {
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
-            con.setAutoCommit(false); // Start a transaction
-
+            con.setAutoCommit(false);
             stmt = con.prepareStatement(query);
             stmt.setString(1, entity.getNom());
             stmt.setString(2, entity.getPrenom());
@@ -81,14 +84,13 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
         } catch (SQLException e) {
             if (con != null) {
                 try {
-                    con.rollback(); // Rollback in case of an error
+                    con.rollback(); 
                 } catch (SQLException ex) {
                     System.out.println("Error during rollback: " + ex.getMessage());
                 }
             }
             System.out.println(e.getMessage());
         } finally {
-            // Close resources
             try {
                 if (stmt != null) stmt.close();
                 if (con != null) con.close();

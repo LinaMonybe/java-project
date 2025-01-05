@@ -24,12 +24,12 @@ public class AppController {
 
     @FXML
     public void manageFields(ActionEvent event) {
-        loadNewStage("fields.fxml", event);
+        loadNewStage("terrain.fxml", event);
     }
 
     @FXML
     public void manageReservations(ActionEvent event) {
-        loadNewStage("reservations.fxml", event);
+        loadNewStage("reservation.fxml", event);
     }
 
     @FXML
