@@ -1,0 +1,19 @@
+
+.column-header {
+    -fx-background-color: #7fb5c8;        
+} 
+
+.table-row-cell {
+    -fx-background-color: #ffffff; /* White background */
+    -fx-text-fill: #2c3e50; /* Dark blue-gray text */
+    -fx-font-size: 14px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f0f8ff; /* Light blue for odd rows */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #7fb5c8; /* Light blue for selected rows */
+    -fx-text-fill: #ffffff; /* White text for selected rows */
+}

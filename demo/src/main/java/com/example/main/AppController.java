@@ -19,7 +19,7 @@ public class AppController {
 
     @FXML
     public void manageRooms(ActionEvent event) {
-        loadNewStage("rooms.fxml", event);
+        loadNewStage("salle.fxml", event);
     }
 
     @FXML

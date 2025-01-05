@@ -12,6 +12,12 @@ public class Salle {
         this.capacite=capacite;
     }
 
+    
+    public Salle(String nomSalle, int capacite) {
+        this.nomSalle= nomSalle;
+        this.capacite=capacite;
+    }
+
     public int getIdSalle() {
         return this.idSalle;
     }
