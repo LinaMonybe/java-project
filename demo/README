@@ -1,0 +1,34 @@
+# Project - Rendu 2: Enhancing DAO
+
+## Overview
+This project refines the use of **(DAO)** for better separation of concerns in a Java application. I’ve implemented CRUD operations for key entities, created a generic DAO interface, and introduced a JDBC transaction manager to ensure data integrity.
+
+----------------------------------------------------------------------------
+
+## Features
+- **Refactored CRUD Operations** for the following entities:
+  - User
+  - Event
+  - Room
+  - Field
+  - Reservation
+- **Generic DAO Interface** for standardizing data access methods.
+- **JDBC Transaction Manager** to handle multi-query operations and ensure transaction integrity.
+- **JUnit Unit Tests** to validate DAO functionality.
+
+
+----------------------------------------------------------------------------
+
+## Project Structure
+
+- **dao**: Contains DAO interfaces and implementations.
+- **model**: Holds entity classes (User, Event, etc.).
+- **service**: Contains business logic.
+- **main**: The application’s entry point.
+
+----------------------------------------------------------------------------
+
+## Conclusion
+
+This project enhances the management of data access and transaction integrity in a Java application.
+The use of generic DAOs and a transaction manager improves code modularity and maintainability.
