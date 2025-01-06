@@ -1,21 +1,24 @@
 package com.example.model;
 
+import java.util.Date;
+
 public class Reservation {
     private int idReservation;
     private int idUser ;
     private int idEvent;
     private int idSalle;
     private int idTerrain;
-    private String dateReservation;
+    private Date dateReservation;
 
-    public Reservation(int idReservation, int idUser, int idEvent, int idSalle,int idTerrain, String dateReservation) {
+    public Reservation(int idReservation, int idUser, int idEvent, int idSalle, int idTerrain, Date dateReservation) {
         this.idReservation = idReservation;
-        this.idUser=idUser ;
-        this.idEvent=idEvent;
-        this.idSalle=idSalle;
-        this.idTerrain=idTerrain;
-        this.dateReservation=dateReservation;
+        this.idUser = idUser;
+        this.idEvent = idEvent;
+        this.idSalle = idSalle;
+        this.idTerrain = idTerrain;
+        this.dateReservation = dateReservation;
     }
+    
 
     public int getIdReservation() {
         return this.idReservation;
@@ -37,7 +40,7 @@ public class Reservation {
         return this.idTerrain;
     }
 
-    public String getDateReservation() {
+    public Date getDateReservation() {
         return this.dateReservation;
     }
 
@@ -63,7 +66,7 @@ public class Reservation {
         this.idTerrain=idTerrain;
     }
 
-    public void setDateReservation(String dateReservation) {
+    public void setDateReservation(Date dateReservation) {
         this.dateReservation=dateReservation;
     }
 }

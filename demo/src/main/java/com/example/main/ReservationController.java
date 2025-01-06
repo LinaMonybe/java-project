@@ -1,6 +1,8 @@
 package com.example.main;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.example.dao.ReservationDAO;
@@ -37,7 +39,7 @@ public class ReservationController {
     @FXML
     private TableColumn<Reservation, Integer> colFieldId;
     @FXML
-    private TableColumn<Reservation, String> colReservationDate;
+    private TableColumn<Reservation, Date> colReservationDate;  // Change to Date type
 
     @FXML
     private TextField txtUserId;
@@ -86,9 +88,9 @@ public class ReservationController {
         String eventIdStr = txtEventId.getText();
         String roomIdStr = txtRoomId.getText();
         String fieldIdStr = txtFieldId.getText();
-        String reservationDate = txtReservationDate.getText();
+        String reservationDateStr = txtReservationDate.getText();
 
-        if (userIdStr.isEmpty() || eventIdStr.isEmpty() || roomIdStr.isEmpty() || fieldIdStr.isEmpty() || reservationDate.isEmpty()) {
+        if (userIdStr.isEmpty() || eventIdStr.isEmpty() || roomIdStr.isEmpty() || fieldIdStr.isEmpty() || reservationDateStr.isEmpty()) {
             showAlert("Error", "Please fill in all fields.");
             return;
         }
@@ -98,6 +100,13 @@ public class ReservationController {
             int eventId = Integer.parseInt(eventIdStr);
             int roomId = Integer.parseInt(roomIdStr);
             int fieldId = Integer.parseInt(fieldIdStr);
+
+            // Convert reservationDate string to java.sql.Date
+            java.sql.Date reservationDate = convertStringToDate(reservationDateStr);
+            if (reservationDate == null) {
+                showAlert("Error", "Invalid date format. Please use yyyy-MM-dd.");
+                return;
+            }
 
             Reservation newReservation = new Reservation(0, userId, eventId, roomId, fieldId, reservationDate);
             reservationDAO.add(newReservation);
@@ -118,7 +127,7 @@ public class ReservationController {
             txtEventId.setText(String.valueOf(selectedReservation.getIdEvent()));
             txtRoomId.setText(String.valueOf(selectedReservation.getIdSalle()));
             txtFieldId.setText(String.valueOf(selectedReservation.getIdTerrain()));
-            txtReservationDate.setText(selectedReservation.getDateReservation());
+            txtReservationDate.setText(selectedReservation.getDateReservation().toString()); // Format date if needed
         } else {
             showAlert("No Selection", "Please select a reservation to update.");
         }
@@ -130,9 +139,9 @@ public class ReservationController {
         String eventIdStr = txtEventId.getText();
         String roomIdStr = txtRoomId.getText();
         String fieldIdStr = txtFieldId.getText();
-        String reservationDate = txtReservationDate.getText();
+        String reservationDateStr = txtReservationDate.getText();
 
-        if (userIdStr.isEmpty() || eventIdStr.isEmpty() || roomIdStr.isEmpty() || fieldIdStr.isEmpty() || reservationDate.isEmpty()) {
+        if (userIdStr.isEmpty() || eventIdStr.isEmpty() || roomIdStr.isEmpty() || fieldIdStr.isEmpty() || reservationDateStr.isEmpty()) {
             showAlert("Validation Error", "All fields are required.");
             return;
         }
@@ -142,6 +151,13 @@ public class ReservationController {
             int eventId = Integer.parseInt(eventIdStr);
             int roomId = Integer.parseInt(roomIdStr);
             int fieldId = Integer.parseInt(fieldIdStr);
+
+            // Convert reservationDate string to java.sql.Date
+            java.sql.Date reservationDate = convertStringToDate(reservationDateStr);
+            if (reservationDate == null) {
+                showAlert("Error", "Invalid date format. Please use yyyy-MM-dd.");
+                return;
+            }
 
             if (selectedReservation == null) {
                 // Add new reservation
@@ -192,12 +208,12 @@ public class ReservationController {
     }
 
     @FXML
-private void handleRefresh() {
-    // Clear the form and reload the reservation data
-    clearForm();
-    loadReservationData();
-    showAlert("Refresh", "Reservation data has been refreshed.");
-}
+    private void handleRefresh() {
+        // Clear the form and reload the reservation data
+        clearForm();
+        loadReservationData();
+        showAlert("Refresh", "Reservation data has been refreshed.");
+    }
 
     @FXML
     public void handleBack(ActionEvent event) {
@@ -209,6 +225,16 @@ private void handleRefresh() {
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private java.sql.Date convertStringToDate(String dateStr) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date utilDate = dateFormat.parse(dateStr);
+            return new java.sql.Date(utilDate.getTime());
+        } catch (Exception e) {
+            return null; // Return null if the format is invalid
         }
     }
 }

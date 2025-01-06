@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.EvenementController" spacing="10" padding="10">
+    <HBox spacing="10">
+        <TextField fx:id="txtEventName" promptText="Event Name" />
+        <DatePicker fx:id="txtEventDate" promptText="Event Date" />
+        <TextField fx:id="txtEventDescription" promptText="Event Description" />
+        <TextField fx:id="txtUserId" promptText="User ID" />
+    </HBox>
+    
+    <HBox spacing="10">
+        <Button fx:id="btnSaveEvent" text="Add Event" onAction="#handleAddEvent"/>
+        <Button fx:id="btnUpdateEvent" text="Update Event" onAction="#handleUpdateEvent"/>
+        <Button fx:id="btnDeleteEvent" text="Delete Event" onAction="#handleDeleteEvent"/>
+    </HBox>
+    
+    <TableView fx:id="evenementTable">
+        <TableColumn fx:id="colEventId" text="ID" />
+        <TableColumn fx:id="colEventName" text="Name" />
+        <TableColumn fx:id="colEventDate" text="Date" />
+        <TableColumn fx:id="colEventDescription" text="Description" />
+        <TableColumn fx:id="colEventUserId" text="User ID" />
+    </TableView>
+</VBox>

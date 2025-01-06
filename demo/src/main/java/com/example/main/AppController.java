@@ -29,7 +29,7 @@ public class AppController {
 
     @FXML
     public void manageReservations(ActionEvent event) {
-        loadNewStage("reservation.fxml", event);
+        loadNewStage("event.fxml", event);
     }
 
     @FXML
