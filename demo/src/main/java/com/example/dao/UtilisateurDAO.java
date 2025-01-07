@@ -1,14 +1,14 @@
 package com.example.dao;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.database.DatabaseConnection;
 import com.example.model.Utilisateur;
-
 
 public class UtilisateurDAO implements GenericDao<Utilisateur> {
 
@@ -16,14 +16,11 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
     public List<Utilisateur> getAll() {
         List<Utilisateur> users = new ArrayList<>();
         String query = "SELECT * FROM \"User\"";
-        Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
-            con.setAutoCommit(false); // Start a transaction
-
+            Connection con = DatabaseConnection.getConnection(); // Use static connection
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -35,38 +32,22 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
                 Utilisateur utilisateur = new Utilisateur(id, nom, prenom, email, type);
                 users.add(utilisateur);
             }
-
-            con.commit(); 
+            con.commit();
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    con.rollback(); // Rollback in case of an error
-                } catch (SQLException ex) {
-                    System.out.println("Error during rollback: " + ex.getMessage());
-                }
-            }
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            rollbackConnection();
         } finally {
-            // Close resources
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            closeResources(stmt, rs);
         }
         return users;
     }
 
     public void add(Utilisateur entity) {
         String query = "INSERT INTO \"User\" (firstname, lastname, email, type) VALUES (?, ?, ?, ?)";
-        Connection con = null;
         PreparedStatement stmt = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
-            con.setAutoCommit(false);
+            Connection con = DatabaseConnection.getConnection(); // Use static connection
             stmt = con.prepareStatement(query);
             stmt.setString(1, entity.getNom());
             stmt.setString(2, entity.getPrenom());
@@ -79,42 +60,26 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
             } else {
                 System.out.println("Error adding user");
             }
-
             con.commit();
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    con.rollback(); 
-                } catch (SQLException ex) {
-                    System.out.println("Error during rollback: " + ex.getMessage());
-                }
-            }
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            rollbackConnection();
         } finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            closeResources(stmt, null);
         }
     }
 
     public Utilisateur get(int id) {
         String query = "SELECT * FROM \"User\" WHERE id=?";
         Utilisateur user = null;
-        Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
-            con.setAutoCommit(false); // Start a transaction
-
+            Connection con = DatabaseConnection.getConnection(); // Use static connection
             stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
-
             if (rs.next()) {
                 String fname = rs.getString("firstname");
                 String lname = rs.getString("lastname");
@@ -122,39 +87,22 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
                 String type = rs.getString("type");
                 user = new Utilisateur(id, fname, lname, email, type);
             }
-
-            con.commit(); // Commit the transaction
+            con.commit();
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    con.rollback(); // Rollback in case of an error
-                } catch (SQLException ex) {
-                    System.out.println("Error during rollback: " + ex.getMessage());
-                }
-            }
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            rollbackConnection();
         } finally {
-            // Close resources
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            closeResources(stmt, rs);
         }
         return user;
     }
 
     public void update(Utilisateur entity) {
         String query = "UPDATE \"User\" SET firstname=?, lastname=?, email=?, type=? WHERE id=?";
-        Connection con = null;
         PreparedStatement stmt = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
-            con.setAutoCommit(false); // Start a transaction
-
+            Connection con = DatabaseConnection.getConnection(); // Use static connection
             stmt = con.prepareStatement(query);
             stmt.setString(1, entity.getNom());
             stmt.setString(2, entity.getPrenom());
@@ -168,37 +116,21 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
             } else {
                 System.out.println("Error updating user");
             }
-
-            con.commit(); // Commit the transaction
+            con.commit();
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    con.rollback(); // Rollback in case of an error
-                } catch (SQLException ex) {
-                    System.out.println("Error during rollback: " + ex.getMessage());
-                }
-            }
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            rollbackConnection();
         } finally {
-            // Close resources
-            try {
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            closeResources(stmt, null);
         }
     }
 
     public void delete(int id) {
         String query = "DELETE FROM \"User\" WHERE id=?";
-        Connection con = null;
         PreparedStatement stmt = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
-            con.setAutoCommit(false); // Start a transaction
-
+            Connection con = DatabaseConnection.getConnection(); // Use static connection
             stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
 
@@ -208,25 +140,32 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
             } else {
                 System.out.println("Error deleting user");
             }
-
-            con.commit(); // Commit the transaction
+            con.commit();
         } catch (SQLException e) {
-            if (con != null) {
-                try {
-                    con.rollback(); // Rollback in case of an error
-                } catch (SQLException ex) {
-                    System.out.println("Error during rollback: " + ex.getMessage());
-                }
-            }
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            rollbackConnection();
         } finally {
-            // Close resources
-            try {
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
+            closeResources(stmt, null);
+        }
+    }
+
+    private void rollbackConnection() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            if (con != null) {
+                con.rollback();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeResources(PreparedStatement stmt, ResultSet rs) {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
