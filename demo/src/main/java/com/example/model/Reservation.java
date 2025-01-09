@@ -1,6 +1,5 @@
 package com.example.model;
 
-import java.util.Date;
 
 public class Reservation {
     private int idReservation;
@@ -8,9 +7,14 @@ public class Reservation {
     private int idEvent;
     private int idSalle;
     private int idTerrain;
-    private Date dateReservation;
+    private String dateReservation;
 
-    public Reservation(int idReservation, int idUser, int idEvent, int idSalle, int idTerrain, Date dateReservation) {
+    private String userName;
+    private String eventName;
+    private String roomName;
+    private String fieldName;
+
+    public Reservation(int idReservation, int idUser, int idEvent, int idSalle, int idTerrain, String dateReservation) {
         this.idReservation = idReservation;
         this.idUser = idUser;
         this.idEvent = idEvent;
@@ -19,6 +23,37 @@ public class Reservation {
         this.dateReservation = dateReservation;
     }
     
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
     public int getIdReservation() {
         return this.idReservation;
@@ -40,7 +75,7 @@ public class Reservation {
         return this.idTerrain;
     }
 
-    public Date getDateReservation() {
+    public String getDateReservation() {
         return this.dateReservation;
     }
 
@@ -66,7 +101,7 @@ public class Reservation {
         this.idTerrain=idTerrain;
     }
 
-    public void setDateReservation(Date dateReservation) {
+    public void setDateReservation(String dateReservation) {
         this.dateReservation=dateReservation;
     }
 }

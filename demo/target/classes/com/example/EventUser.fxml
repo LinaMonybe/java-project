@@ -15,7 +15,6 @@
 
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Event Management System" textFill="#3e4fe5" />
 
-    <!-- Table to display events -->
     <TableView id="table" fx:id="evenementTable" prefHeight="400" prefWidth="600" style="-fx-background-color: #f0fffb;" stylesheets="@style.css">
         <columns>
             <TableColumn fx:id="colEventName" prefWidth="200" text="Event Name" />
@@ -24,7 +23,6 @@
         </columns>
     </TableView>
 
-    <!-- Back to Main button -->
     <HBox alignment="CENTER" spacing="10">
         <Button fx:id="btnBack" onAction="#handleBack" prefWidth="100" style="-fx-background-color: #ffffff;" text="Back to Main" />
     </HBox>

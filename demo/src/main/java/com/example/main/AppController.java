@@ -29,7 +29,7 @@ public class AppController {
 
     @FXML
     public void manageReservations(ActionEvent event) {
-        loadNewStage("event.fxml", event);
+        loadNewStage("reservation.fxml", event);
     }
 
     @FXML
@@ -39,21 +39,18 @@ public class AppController {
 
     private void loadNewStage(String fxmlFile, ActionEvent event) {
         try {
-            // Load the new FXML file (e.g., user.fxml, rooms.fxml, etc.)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/" + fxmlFile));
             Parent root = loader.load();
             
-            // Create a new stage for the new FXML file
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
 
-            // Close the current stage (window) and open the new one
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            stage.show();  // Show the new stage
+            stage.show(); 
         } catch (IOException e) {
-            e.printStackTrace();  // Handle potential exceptions
+            e.printStackTrace(); 
         }
     }
 }

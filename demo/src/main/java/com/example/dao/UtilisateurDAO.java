@@ -1,26 +1,28 @@
 package com.example.dao;
-
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.database.DatabaseConnection;
 import com.example.model.Utilisateur;
+
 
 public class UtilisateurDAO implements GenericDao<Utilisateur> {
 
     @Override
     public List<Utilisateur> getAll() {
         List<Utilisateur> users = new ArrayList<>();
-        String query = "SELECT * FROM \"User\"";
+        String query = "SELECT * FROM users";
+        Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            Connection con = DatabaseConnection.getConnection(); // Use static connection
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+            con.setAutoCommit(false);
             stmt = con.prepareStatement(query);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -29,86 +31,125 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
                 String prenom = rs.getString("firstname");
                 String email = rs.getString("email");
                 String type = rs.getString("type");
-                Utilisateur utilisateur = new Utilisateur(id, nom, prenom, email, type);
+                String password = rs.getString("password");
+                Utilisateur utilisateur = new Utilisateur(id, nom, prenom, email, type,password);
                 users.add(utilisateur);
             }
-            con.commit();
+
+            con.commit(); 
         } catch (SQLException e) {
-            e.printStackTrace();
-            rollbackConnection();
+            if (con != null) {
+                try {
+                    con.rollback(); 
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback: " + ex.getMessage());
+                }
+            }
+            System.out.println(e.getMessage());
         } finally {
-            closeResources(stmt, rs);
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
         return users;
     }
 
     public void add(Utilisateur entity) {
-        String query = "INSERT INTO \"User\" (firstname, lastname, email, type) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO users (firstname, lastname, email, type,password) VALUES (?, ?, ?, ?,?)";
+        Connection con = null;
         PreparedStatement stmt = null;
 
         try {
-            Connection con = DatabaseConnection.getConnection(); // Use static connection
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+            con.setAutoCommit(false);
             stmt = con.prepareStatement(query);
             stmt.setString(1, entity.getNom());
             stmt.setString(2, entity.getPrenom());
             stmt.setString(3, entity.getEmail());
             stmt.setString(4, entity.getType());
-
+            stmt.setString(5, entity.getPassword());
             int rows = stmt.executeUpdate();
             if (rows > 0) {
                 System.out.println("Inserted into user successfully!");
             } else {
                 System.out.println("Error adding user");
             }
+
             con.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-            rollbackConnection();
+            if (con != null) {
+                try {
+                    con.rollback(); 
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback: " + ex.getMessage());
+                }
+            }
+            System.out.println(e.getMessage());
         } finally {
-            closeResources(stmt, null);
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
     }
 
     public Utilisateur get(int id) {
-        String query = "SELECT * FROM \"User\" WHERE id=?";
+        String query = "SELECT * FROM users WHERE id=?";
         Utilisateur user = null;
+        Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-
+    
         try {
-            Connection con = DatabaseConnection.getConnection(); // Use static connection
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+    
             stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
+    
             if (rs.next()) {
                 String fname = rs.getString("firstname");
                 String lname = rs.getString("lastname");
                 String email = rs.getString("email");
                 String type = rs.getString("type");
-                user = new Utilisateur(id, fname, lname, email, type);
+                String password = rs.getString("password");
+                user = new Utilisateur(id, fname, lname, email, type, password);
             }
-            con.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-            rollbackConnection();
+            System.out.println("Error: " + e.getMessage());
         } finally {
-            closeResources(stmt, rs);
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
         return user;
     }
 
     public void update(Utilisateur entity) {
-        String query = "UPDATE \"User\" SET firstname=?, lastname=?, email=?, type=? WHERE id=?";
+        String query = "UPDATE users SET firstname=?, lastname=?, email=?, type=? , password=? WHERE id=?";
+        Connection con = null;
         PreparedStatement stmt = null;
 
         try {
-            Connection con = DatabaseConnection.getConnection(); // Use static connection
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+            con.setAutoCommit(false); 
             stmt = con.prepareStatement(query);
             stmt.setString(1, entity.getNom());
             stmt.setString(2, entity.getPrenom());
             stmt.setString(3, entity.getEmail());
             stmt.setString(4, entity.getType());
-            stmt.setInt(5, entity.getId());
+            stmt.setInt(6, entity.getId());
+            stmt.setString(5, entity.getPassword());
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -116,21 +157,34 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
             } else {
                 System.out.println("Error updating user");
             }
-            con.commit();
+            con.commit(); 
         } catch (SQLException e) {
-            e.printStackTrace();
-            rollbackConnection();
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback: " + ex.getMessage());
+                }
+            }
+            System.out.println(e.getMessage());
         } finally {
-            closeResources(stmt, null);
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
     }
 
     public void delete(int id) {
-        String query = "DELETE FROM \"User\" WHERE id=?";
+        String query = "DELETE FROM users WHERE id=?";
+        Connection con = null;
         PreparedStatement stmt = null;
 
         try {
-            Connection con = DatabaseConnection.getConnection(); // Use static connection
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+            con.setAutoCommit(false);
             stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
 
@@ -142,30 +196,59 @@ public class UtilisateurDAO implements GenericDao<Utilisateur> {
             }
             con.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-            rollbackConnection();
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback: " + ex.getMessage());
+                }
+            }
+            System.out.println(e.getMessage());
         } finally {
-            closeResources(stmt, null);
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
     }
 
-    private void rollbackConnection() {
+    public Utilisateur validateUser(String email, String password) {
+        String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+    
         try {
-            Connection con = DatabaseConnection.getConnection();
-            if (con != null) {
-                con.rollback();
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+            stmt = con.prepareStatement(query);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String nom = rs.getString("lastname");
+                String prenom = rs.getString("firstname");
+                String type = rs.getString("type");
+                String dbPassword = rs.getString("password");
+    
+              
+                return new Utilisateur(id, nom, prenom, email, type, dbPassword);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred during user validation: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
+        return null;
     }
-
-    private void closeResources(PreparedStatement stmt, ResultSet rs) {
-        try {
-            if (rs != null) rs.close();
-            if (stmt != null) stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    
 }

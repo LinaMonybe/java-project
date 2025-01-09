@@ -28,6 +28,7 @@
         <Button fx:id="btnUpdate" onAction="#handleUpdateTerrain" prefWidth="100" style="-fx-background-color: #ffffff;" text="Update Terrain" />
         <Button fx:id="btnDelete" onAction="#handleDeleteTerrain" prefWidth="100" style="-fx-background-color: #ffffff;" text="Delete Terrain" />
         <Button fx:id="btnRefresh" onAction="#handleRefresh" prefWidth="100" style="-fx-background-color: #ffffff;" text="Refresh" />
+        <Button fx:id="btnReserve" onAction="#ReserveFeild" prefWidth="100" style="-fx-background-color: #ffffff;" text="Reserve" />
     </HBox>
 
     <VBox alignment="CENTER" spacing="10">

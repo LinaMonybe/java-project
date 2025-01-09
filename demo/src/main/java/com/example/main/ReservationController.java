@@ -1,8 +1,13 @@
+
+
 package com.example.main;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.example.dao.ReservationDAO;
@@ -16,225 +21,199 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class ReservationController {
 
     @FXML
+    private Button btnChange;
+    @FXML
+    private DatePicker DateReserve;
+
+    @FXML
+    private Button back;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private Button btnUpdate;
+
+    @FXML
+    private TableColumn<Reservation, String> colEvent;
+
+    @FXML
+    private TableColumn<Reservation, String> colField;
+
+    @FXML
+    private TableColumn<Reservation, String> colReservationDate;
+
+    @FXML
+    private TableColumn<Reservation, String> colRoom;
+
+    @FXML
+    private TableColumn<Reservation, String> colUser;
+
+    @FXML
     private TableView<Reservation> reservationTable;
-    @FXML
-    private TableColumn<Reservation, Integer> colId;
-    @FXML
-    private TableColumn<Reservation, Integer> colUserId;
-    @FXML
-    private TableColumn<Reservation, Integer> colEventId;
-    @FXML
-    private TableColumn<Reservation, Integer> colRoomId;
-    @FXML
-    private TableColumn<Reservation, Integer> colFieldId;
-    @FXML
-    private TableColumn<Reservation, Date> colReservationDate;  // Change to Date type
 
-    @FXML
-    private TextField txtUserId;
-    @FXML
-    private TextField txtEventId;
-    @FXML
-    private TextField txtRoomId;
-    @FXML
-    private TextField txtFieldId;
-    @FXML
-    private TextField txtReservationDate;
-
-    @FXML
-    private Button btnSave;
-    @FXML
-    private Button btnCancel;
-
-    private ReservationDAO reservationDAO = new ReservationDAO();
-    private ObservableList<Reservation> reservationList = FXCollections.observableArrayList();
+    private final ReservationDAO reservationDAO = new ReservationDAO();
+    private final ObservableList<Reservation> reserveList = FXCollections.observableArrayList();
     private Reservation selectedReservation = null;
 
     @FXML
-    public void initialize() {
-        // Set up table columns
-        colId.setCellValueFactory(new PropertyValueFactory<>("idReservation"));
-        colUserId.setCellValueFactory(new PropertyValueFactory<>("idUser"));
-        colEventId.setCellValueFactory(new PropertyValueFactory<>("idEvent"));
-        colRoomId.setCellValueFactory(new PropertyValueFactory<>("idSalle"));
-        colFieldId.setCellValueFactory(new PropertyValueFactory<>("idTerrain"));
-        colReservationDate.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
-
-        // Load data into the table
-        loadReservationData();
-    }
-
-    private void loadReservationData() {
-        reservationList.clear();
-        List<Reservation> reservations = reservationDAO.getAll();
-        reservationList.addAll(reservations);
-        reservationTable.setItems(reservationList);
-    }
-
-    @FXML
-    private void handleAddReservation() {
-        String userIdStr = txtUserId.getText();
-        String eventIdStr = txtEventId.getText();
-        String roomIdStr = txtRoomId.getText();
-        String fieldIdStr = txtFieldId.getText();
-        String reservationDateStr = txtReservationDate.getText();
-
-        if (userIdStr.isEmpty() || eventIdStr.isEmpty() || roomIdStr.isEmpty() || fieldIdStr.isEmpty() || reservationDateStr.isEmpty()) {
-            showAlert("Error", "Please fill in all fields.");
-            return;
-        }
-
-        try {
-            int userId = Integer.parseInt(userIdStr);
-            int eventId = Integer.parseInt(eventIdStr);
-            int roomId = Integer.parseInt(roomIdStr);
-            int fieldId = Integer.parseInt(fieldIdStr);
-
-            // Convert reservationDate string to java.sql.Date
-            java.sql.Date reservationDate = convertStringToDate(reservationDateStr);
-            if (reservationDate == null) {
-                showAlert("Error", "Invalid date format. Please use yyyy-MM-dd.");
-                return;
+    private String getUserName(int userId) {
+        String userName = "";
+        String query = "SELECT firstname || ' ' || lastname AS full_name FROM users WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    userName = rs.getString("full_name");
+                }
             }
-
-            Reservation newReservation = new Reservation(0, userId, eventId, roomId, fieldId, reservationDate);
-            reservationDAO.add(newReservation);
-
-            showAlert("Success", "Reservation added successfully!");
-            clearForm();
-            loadReservationData();
-        } catch (NumberFormatException e) {
-            showAlert("Error", "User ID, Event ID, Room ID, and Field ID must be numbers.");
-        }
-    }
-
-    @FXML
-    private void handleUpdateReservation() {
-        selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
-        if (selectedReservation != null) {
-            txtUserId.setText(String.valueOf(selectedReservation.getIdUser()));
-            txtEventId.setText(String.valueOf(selectedReservation.getIdEvent()));
-            txtRoomId.setText(String.valueOf(selectedReservation.getIdSalle()));
-            txtFieldId.setText(String.valueOf(selectedReservation.getIdTerrain()));
-            txtReservationDate.setText(selectedReservation.getDateReservation().toString()); // Format date if needed
-        } else {
-            showAlert("No Selection", "Please select a reservation to update.");
-        }
-    }
-
-    @FXML
-    private void handleSaveReservation() {
-        String userIdStr = txtUserId.getText();
-        String eventIdStr = txtEventId.getText();
-        String roomIdStr = txtRoomId.getText();
-        String fieldIdStr = txtFieldId.getText();
-        String reservationDateStr = txtReservationDate.getText();
-
-        if (userIdStr.isEmpty() || eventIdStr.isEmpty() || roomIdStr.isEmpty() || fieldIdStr.isEmpty() || reservationDateStr.isEmpty()) {
-            showAlert("Validation Error", "All fields are required.");
-            return;
-        }
-
-        try {
-            int userId = Integer.parseInt(userIdStr);
-            int eventId = Integer.parseInt(eventIdStr);
-            int roomId = Integer.parseInt(roomIdStr);
-            int fieldId = Integer.parseInt(fieldIdStr);
-
-            // Convert reservationDate string to java.sql.Date
-            java.sql.Date reservationDate = convertStringToDate(reservationDateStr);
-            if (reservationDate == null) {
-                showAlert("Error", "Invalid date format. Please use yyyy-MM-dd.");
-                return;
-            }
-
-            if (selectedReservation == null) {
-                // Add new reservation
-                Reservation newReservation = new Reservation(0, userId, eventId, roomId, fieldId, reservationDate);
-                reservationDAO.add(newReservation);
-            } else {
-                // Update existing reservation
-                selectedReservation.setIdUser(userId);
-                selectedReservation.setIdEvent(eventId);
-                selectedReservation.setIdSalle(roomId);
-                selectedReservation.setIdTerrain(fieldId);
-                selectedReservation.setDateReservation(reservationDate);
-                reservationDAO.update(selectedReservation);
-            }
-
-            showAlert("Success", "Reservation saved successfully!");
-            loadReservationData();
-            clearForm();
-        } catch (NumberFormatException e) {
-            showAlert("Error", "User ID, Event ID, Room ID, and Field ID must be numbers.");
-        }
-    }
-
-    @FXML
-    private void handleDeleteReservation() {
-        selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
-        if (selectedReservation != null) {
-            reservationDAO.delete(selectedReservation.getIdReservation());
-            loadReservationData();
-        } else {
-            showAlert("No Selection", "Please select a reservation to delete.");
-        }
-    }
-
-    private void clearForm() {
-        txtUserId.clear();
-        txtEventId.clear();
-        txtRoomId.clear();
-        txtFieldId.clear();
-        txtReservationDate.clear();
-    }
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    @FXML
-    private void handleRefresh() {
-        // Clear the form and reload the reservation data
-        clearForm();
-        loadReservationData();
-        showAlert("Refresh", "Reservation data has been refreshed.");
-    }
-
-    @FXML
-    public void handleBack(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        return userName;
     }
 
-    private java.sql.Date convertStringToDate(String dateStr) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date utilDate = dateFormat.parse(dateStr);
-            return new java.sql.Date(utilDate.getTime());
-        } catch (Exception e) {
-            return null; // Return null if the format is invalid
+    @FXML
+    private String getEventName(int eventId) {
+        String eventName = "";
+        String query = "SELECT name FROM events WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, eventId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    eventName = rs.getString("name");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return eventName;
+    }
+
+    @FXML
+    private String getRoomName(int roomId) {
+        String roomName = "";
+        String query = "SELECT name FROM rooms WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, roomId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    roomName = rs.getString("name");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roomName;
+    }
+
+    @FXML
+    private String getFieldName(int fieldId) {
+        String fieldName = "";
+        String query = "SELECT name FROM fields WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, fieldId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    fieldName = rs.getString("name");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fieldName;
+    }
+
+    @FXML
+    public void initialize() {
+        // will set up table col
+        colUser.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        colEvent.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+        colRoom.setCellValueFactory(new PropertyValueFactory<>("roomName"));
+        colField.setCellValueFactory(new PropertyValueFactory<>("fieldName"));
+        colReservationDate.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
+        // will looad data into the table
+        loadReservationData();
+    }
+
+    @FXML
+    public void loadReservationData() {
+        reserveList.clear();
+        List<Reservation> reservations = reservationDAO.getAllReservations(); 
+        for (Reservation reservation : reservations) {
+            reservation.setUserName(getUserName(reservation.getIdUser()));
+            reservation.setEventName(getEventName(reservation.getIdEvent()));
+            reservation.setRoomName(getRoomName(reservation.getIdSalle()));
+            reservation.setFieldName(getFieldName(reservation.getIdTerrain()));
+        }
+
+        reserveList.addAll(reservations);
+        reservationTable.setItems(reserveList);
+    }
+
+    @FXML
+    void backToMain(ActionEvent event) {
+       try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); 
+        Parent root = loader.load();
+        
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        
+        stage.setScene(new Scene(root));
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
+
+    @FXML
+    void handleDeleteReservation(ActionEvent event) {
+        Reservation selected = reservationTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            reservationDAO.deleteReservation(selected.getIdReservation());
+            loadReservationData();
+        }
+    }
+    // @FXML
+    // void handleUpdateReservation(ActionEvent event) {
+    //     selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
+    //     if (selectedReservation != null) {
+    //          String dateReservation = selectedReservation.getDateReservation();
+    //          if (dateReservation != null && !dateReservation.isEmpty()) {
+    //              // Extract only the date part (in case it's a full datetime string)
+    //              String dateOnly = dateReservation.split("T")[0];  // Split by 'T' and take the date part
+    //              LocalDate localDate = LocalDate.parse(dateOnly);  // Parse it into LocalDate
+    //              DateReserve.setValue(localDate);  // Set the value of the DatePicker
+    //          }
+    //     }
+    // }
+    
+    private void clearForm() {
+       DateReserve.setValue(null);
+    }
+
+
+    @FXML
+    void handleUpdateDate(ActionEvent event) {
+        String date = DateReserve.getValue().toString();
+        if (selectedReservation != null) {
+            selectedReservation.setDateReservation(date);
+            reservationDAO.updateReservation(selectedReservation);
+        }
+        loadReservationData();
+         clearForm();
     }
 }

@@ -22,7 +22,6 @@ public class SalleDAO implements GenericDao<Salle> {
             stmt.setString(1, entity.getNomSalle());
             stmt.setInt(2, entity.getCapacite());
             stmt.executeUpdate();
-
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -32,9 +31,8 @@ public class SalleDAO implements GenericDao<Salle> {
     public Salle get(int id) {
         String query = "SELECT * FROM rooms WHERE id=?";
         Salle salle = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+        try (Connection connection =DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
              PreparedStatement stmt = connection.prepareStatement(query)) {
-
             Class.forName("org.postgresql.Driver");
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -55,10 +53,9 @@ public class SalleDAO implements GenericDao<Salle> {
     public List<Salle> getAll() {
         List<Salle> salles = new ArrayList<>();
         String query = "SELECT * FROM rooms";
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+        try (Connection connection =DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
              PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
-
             Class.forName("org.postgresql.Driver");
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -95,7 +92,6 @@ public class SalleDAO implements GenericDao<Salle> {
         String query = "DELETE FROM rooms WHERE id=?";
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
              PreparedStatement stmt = connection.prepareStatement(query)) {
-
             Class.forName("org.postgresql.Driver");
             stmt.setInt(1, id);
             stmt.executeUpdate();

@@ -1,15 +1,15 @@
 -------------------------------------------------------------------------------
 Test set: SalleDAOTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.423 s <<< FAILURE! - in SalleDAOTest
-SalleDAOTest.testGetAll  Time elapsed: 0.393 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <1> but was: <0>
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.437 s <<< FAILURE! -- in SalleDAOTest
+SalleDAOTest.testGetAll -- Time elapsed: 0.403 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <30> but was: <100>
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55)
 	at org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62)
 	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
 	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
 	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:510)
-	at SalleDAOTest.testGetAll(SalleDAOTest.java:20)
+	at SalleDAOTest.testGetAll(SalleDAOTest.java:21)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -71,7 +71,7 @@ org.opentest4j.AssertionFailedError: expected: <1> but was: <0>
 	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
 	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:96)
 	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:75)
-	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
 	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)

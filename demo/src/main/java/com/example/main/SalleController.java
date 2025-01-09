@@ -44,18 +44,18 @@ public class SalleController {
     @FXML
     private Button btnCancel;
 
+    @FXML
+    private Button btnReserve;
+
     private SalleDAO salleDAO = new SalleDAO();
     private ObservableList<Salle> salleList = FXCollections.observableArrayList();
     private Salle selectedSalle = null;
 
     @FXML
     public void initialize() {
-        // Set up table columns
         colId.setCellValueFactory(new PropertyValueFactory<>("idSalle"));
         colName.setCellValueFactory(new PropertyValueFactory<>("nomSalle"));
         colCap.setCellValueFactory(new PropertyValueFactory<>("capacite"));
-
-        // Load data into the table
         loadSalleData();
     }
 
@@ -77,16 +77,12 @@ public class SalleController {
 
         try {
             int capacite = Integer.parseInt(capaciteStr);
-            
-            // Create a Salle object
             Salle newSalle = new Salle(0,nomSalle, capacite);
-            
-            // Add the new salle to the database
+    
             salleDAO.add(newSalle);
             
             showAlert("Success", "Room added successfully!");
             
-            // Optionally, clear fields after submission
             txtName.clear();
             txtCapacity.clear();
         } catch (NumberFormatException e) {
@@ -95,13 +91,8 @@ public class SalleController {
     }
 
 
-    
-    // @FXML
-    // private void handleAddSalle() {
-    //     clearForm();
-    //     selectedSalle = null; // Adding a new user
-    // }
-
+   
+ 
     @FXML
     private void handleUpdateSalle() {
         selectedSalle = salleTable.getSelectionModel().getSelectedItem();
@@ -117,8 +108,8 @@ public class SalleController {
     private void handleDeleteSalle() {
         selectedSalle = salleTable.getSelectionModel().getSelectedItem();
         if (selectedSalle != null) {
-            salleDAO.delete(selectedSalle.getIdSalle()); // Make sure delete uses the idSalle
-            loadSalleData(); // Reload the data to reflect the changes
+            salleDAO.delete(selectedSalle.getIdSalle());
+            loadSalleData(); 
         } else {
             showAlert("No Selection", "Please select a salle to delete.");
         }
@@ -129,20 +120,17 @@ private void handleSaveSalle() {
     String nomSalle = txtName.getText();
     String capacite = txtCapacity.getText();
 
-    // Validate input
     if (validateInput(nomSalle, capacite)) {
         if (selectedSalle == null) {
-            // Add new salle
-            Salle newSalle = new Salle(0,nomSalle, Integer.parseInt(capacite)); // Assuming capacite is an Integer
-            salleDAO.add(newSalle); // Make sure the DAO add method handles saving
+            Salle newSalle = new Salle(0,nomSalle, Integer.parseInt(capacite)); 
+            salleDAO.add(newSalle); 
         } else {
-            // Update existing salle
             selectedSalle.setNomSalle(nomSalle);
-            selectedSalle.setCapacite(Integer.parseInt(capacite)); // Convert capacite to Integer
-            salleDAO.update(selectedSalle); // Make sure the DAO update method handles updating
+            selectedSalle.setCapacite(Integer.parseInt(capacite)); 
+            salleDAO.update(selectedSalle);
         }
-        loadSalleData(); // Reload data
-        clearForm(); // Clear input fields
+        loadSalleData(); 
+        clearForm();
     }
 }
 
@@ -176,21 +164,38 @@ private void handleSaveSalle() {
     @FXML
     public void handleBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); // Ensure path is correct
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); 
             Parent root = loader.load();
     
-            // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     
-            // Set the new scene without closing the stage
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
 
-  
+    @FXML
+    void ReserveRoom(ActionEvent event) {
+        Salle selectedSalle = salleTable.getSelectionModel().getSelectedItem();
+        if (selectedSalle == null) {
+            showAlert("No Selection", "Please select a room to reserve.");
+            return;
+        }
+     
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/AddRerserv.fxml"));
+            Parent root = loader.load();
+            AddRsereveController addReservController = loader.getController();
+            addReservController.setSalle(selectedSalle);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }    
+
+    
     
 }
 

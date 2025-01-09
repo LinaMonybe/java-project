@@ -3,19 +3,44 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.main.AppController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="600.0" style="-fx-background-color: #f4f4f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.main.AppController">
    <children>
-      <Button layoutX="235.0" layoutY="172.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="25.0" prefWidth="130.0" style="-fx-background-color: #FFFFFF;" text="Manage Users" textFill="#87909e" />
-      <Button layoutX="235.0" layoutY="215.0" mnemonicParsing="false" onAction="#manageRooms" prefHeight="25.0" prefWidth="130.0" style="-fx-background-color: #FFFFFF;" text="Manage Rooms" textFill="#87909e" />
-      <Button layoutX="235.0" layoutY="258.0" mnemonicParsing="false" onAction="#manageFields" prefHeight="25.0" prefWidth="130.0" style="-fx-background-color: #FFFFFF;" text="Manage Fields" textFill="#87909e" />
-      <Button layoutX="235.0" layoutY="298.0" mnemonicParsing="false" onAction="#manageReservations" style="-fx-background-color: #FFFFFF;" text="Manage Reservations" textFill="#87909e" />
-      <Button layoutX="235.0" layoutY="341.0" mnemonicParsing="false" onAction="#exitApp" prefHeight="25.0" prefWidth="130.0" style="-fx-background-color: #FFFFFF;" text="Exit " textFill="#87909e" />
-      <Label layoutX="115.0" layoutY="71.0" prefHeight="30.0" prefWidth="368.0" style="-fx-font-family: Tahoma;" text="Hello there ! And welcome to our system" textAlignment="CENTER" textFill="#3e4fe5ca">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
+      <Label layoutX="86.0" layoutY="39.0" prefHeight="50.0" prefWidth="500.0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Welcome to the Management System" textAlignment="CENTER" />
+      
+      <Button layoutX="220.0" layoutY="120.0" mnemonicParsing="false" onAction="#manageUsers" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 5px; -fx-text-fill: white; -fx-font-size: 14px;">
+         <text>Manage Users</text>
+         <style>
+            -fx-cursor: hand;
+         </style>
+      </Button>
+      
+      <Button layoutX="220.0" layoutY="180.0" mnemonicParsing="false" onAction="#manageRooms" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 5px; -fx-text-fill: white; -fx-font-size: 14px;">
+         <text>Manage Rooms</text>
+         <style>
+            -fx-cursor: hand;
+         </style>
+      </Button>
+      
+      <Button layoutX="220.0" layoutY="240.0" mnemonicParsing="false" onAction="#manageFields" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 5px; -fx-text-fill: white; -fx-font-size: 14px;">
+         <text>Manage Fields</text>
+         <style>
+            -fx-cursor: hand;
+         </style>
+      </Button>
+      
+      <Button layoutX="220.0" layoutY="300.0" mnemonicParsing="false" onAction="#manageReservations" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 5px; -fx-text-fill: white; -fx-font-size: 14px;">
+         <text>Manage Reservations</text>
+         <style>
+            -fx-cursor: hand;
+         </style>
+      </Button>
+      
+      <Button layoutX="220.0" layoutY="360.0" mnemonicParsing="false" onAction="#exitApp" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 5px; -fx-text-fill: white; -fx-font-size: 14px;">
+         <text>Exit</text>
+         <style>
+            -fx-cursor: hand;
+         </style>
+      </Button>
    </children>
 </Pane>

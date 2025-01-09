@@ -1,15 +1,13 @@
 package com.example.model;
 
-import java.util.Date;
-
 public class Evenement {
     private int idEvent;
     private String nomEvent;
-    private Date dateEvent;
+    private String dateEvent;
     private String description;
     private int idUser ;
 
-    public Evenement(int idEvent,String nomEvent,Date dateEvent,String description,int idUser ) {
+    public Evenement(int idEvent,String nomEvent,String dateEvent,String description,int idUser ) {
         this.idEvent =idEvent;
         this.nomEvent =nomEvent;
         this.dateEvent =dateEvent;
@@ -25,7 +23,7 @@ public class Evenement {
         return this.nomEvent;
     }
 
-    public Date getDateEvent() {
+    public String getDateEvent() {
         return this.dateEvent;
     }
 
@@ -46,7 +44,7 @@ public class Evenement {
         this.nomEvent=nomEvent;
     }
 
-    public void setDateEvent(Date dateEvent) {
+    public void setDateEvent(String dateEvent) {
         this.dateEvent=dateEvent;
     }
 
@@ -56,5 +54,9 @@ public class Evenement {
 
     public void setIdUser (int idUser ) {
         this.idUser=idUser ;
+    }
+
+    public void setId (int idEvent ) {
+        this.idEvent=idEvent ;
     }
 }

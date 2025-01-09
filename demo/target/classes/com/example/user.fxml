@@ -17,7 +17,7 @@
 
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="User  Management System" textFill="#3e4fe5" />
 
-    <TableView id="table" fx:id="userTable" prefHeight="400" prefWidth="600" style="-fx-background-color: #f0fffb;" stylesheets="@style.css">
+    <TableView id="table" fx:id="userTable" prefHeight="350" prefWidth="600" style="-fx-background-color: #f0fffb;" stylesheets="@style.css">
         <columns>
             <TableColumn fx:id="colId" prefWidth="48.79998779296875" text="ID" />
             <TableColumn fx:id="colFirstName" prefWidth="117.60003662109375" text="First Name" />

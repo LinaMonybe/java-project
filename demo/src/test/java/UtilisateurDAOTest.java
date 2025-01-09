@@ -12,10 +12,8 @@ public class UtilisateurDAOTest {
     public void testGetAll() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         
-        // Call the method to get all utilisateurs
         List<Utilisateur> utilisateurs = utilisateurDAO.getAll();
         
-        // Assert the properties of the first Utilisateur object
         assertEquals(1, utilisateurs.get(0).getId());
         assertEquals("Lina", utilisateurs.get(0).getPrenom());
         assertEquals("Monybe", utilisateurs.get(0).getNom());

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.HBox?> 
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #aDD8E6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.main.SalleController">
@@ -28,6 +28,7 @@
         <Button fx:id="btnUpdate" onAction="#handleUpdateSalle" prefWidth="100" style="-fx-background-color: #ffffff;" text="Update Salle" />
         <Button fx:id="btnDelete" onAction="#handleDeleteSalle" prefWidth="100" style="-fx-background-color: #ffffff;" text="Delete Salle" />
         <Button fx:id="btnRefresh" onAction="#handleRefresh" prefWidth="100" style="-fx-background-color: #ffffff;" text="Refresh" />
+      <Button fx:id="btnReserve" onAction="#ReserveRoom" prefWidth="100" style="-fx-background-color: #ffffff;" text="Reserve" />
     </HBox>
 
     <VBox alignment="CENTER" spacing="10">

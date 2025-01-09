@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.example.dao.TerrainDAO;
 import com.example.model.Terrain;
-
+ 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,6 +42,9 @@ public class TerrainController {
     @FXML
     private Button btnCancel;
 
+    @FXML
+    private Button btnReserve;
+
     private TerrainDAO terrainDAO = new TerrainDAO();
     private ObservableList<Terrain> terrainList = FXCollections.observableArrayList();
     private Terrain selectedTerrain = null;
@@ -52,8 +55,6 @@ public class TerrainController {
         colId.setCellValueFactory(new PropertyValueFactory<>("idTerrain"));
         colName.setCellValueFactory(new PropertyValueFactory<>("nomTerrain"));
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-
-        // Load data into the table
         loadTerrainData();
     }
 
@@ -72,16 +73,9 @@ public class TerrainController {
             showAlert("Error", "Please fill in all fields.");
             return;
         }
-
-        // Create a Terrain object
         Terrain newTerrain = new Terrain(0, nomTerrain, typeTerrain);
-
-        // Add the new terrain to the database
         terrainDAO.add(newTerrain);
-
         showAlert("Success", "Terrain added successfully!");
-
-        // Optionally, clear fields after submission
         txtName.clear();
         txtType.clear();
     }
@@ -101,8 +95,8 @@ public class TerrainController {
     private void handleDeleteTerrain() {
         selectedTerrain = terrainTable.getSelectionModel().getSelectedItem();
         if (selectedTerrain != null) {
-            terrainDAO.delete(selectedTerrain.getIdTerrain()); // Make sure delete uses the idTerrain
-            loadTerrainData(); // Reload the data to reflect the changes
+            terrainDAO.delete(selectedTerrain.getIdTerrain()); 
+            loadTerrainData(); 
         } else {
             showAlert("No Selection", "Please select a terrain to delete.");
         }
@@ -113,20 +107,17 @@ public class TerrainController {
         String nomTerrain = txtName.getText();
         String typeTerrain = txtType.getText();
     
-        // Validate input
         if (validateInput(nomTerrain, typeTerrain)) {
             if (selectedTerrain == null) {
-                // Add new terrain
-                Terrain newTerrain = new Terrain(0, nomTerrain, typeTerrain); // Assuming id is auto-generated
-                terrainDAO.add(newTerrain); // Make sure the DAO add method handles saving
+                Terrain newTerrain = new Terrain(0, nomTerrain, typeTerrain); 
+                terrainDAO.add(newTerrain); 
             } else {
-                // Update existing terrain
                 selectedTerrain.setNomTerrain(nomTerrain);
                 selectedTerrain.setType(typeTerrain);
-                terrainDAO.update(selectedTerrain); // Make sure the DAO update method handles updating
+                terrainDAO.update(selectedTerrain);
             }
-            loadTerrainData(); // Reload data
-            clearForm(); // Clear input fields
+            loadTerrainData(); 
+            clearForm(); 
         }
     }
     
@@ -158,13 +149,31 @@ public class TerrainController {
     @FXML
     public void handleBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); // Ensure path is correct
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); 
             Parent root = loader.load();
     
-            // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     
-            // Set the new scene without closing the stage
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void ReserveFeild(ActionEvent event){
+        Terrain selectedTerrain = terrainTable.getSelectionModel().getSelectedItem();
+        if (selectedTerrain == null) {
+            showAlert("No Selection", "Please select a room to reserve.");
+            return;
+        }
+     
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/AddRerservFeild.fxml"));
+            Parent root = loader.load();
+            AddRerservFeildControl addReservController = loader.getController();
+            addReservController.setfeild(selectedTerrain);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();

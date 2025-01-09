@@ -58,14 +58,11 @@ public class UserController {
 
     @FXML
     public void initialize() {
-        // Set up table columns
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colFirstName.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         colLastName.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-
-        // Load data into the table
         loadUserData();
     }
 
@@ -75,11 +72,7 @@ public class UserController {
         userTable.setItems(userList);
     }
 
-    @FXML
-    private void handleAddUser() {
-        clearForm();
-        selectedUser = null; // Adding a new user
-    }
+  
 
     @FXML
     private void handleUpdateUser() {
@@ -111,20 +104,16 @@ public class UserController {
         String lastName = txtLastName.getText();
         String email = txtEmail.getText();
         String type = txtType.getText();
-
+      
         if (validateInput(firstName, lastName, email, type)) {
-            if (selectedUser == null) {
-                // Add new user
-                Utilisateur newUser = new Utilisateur(0, firstName, lastName, email, type);
-                utilisateurDAO.add(newUser);
-            } else {
-                // Update existing user
+            if (selectedUser != null) {
                 selectedUser.setPrenom(firstName);
                 selectedUser.setNom(lastName);
                 selectedUser.setEmail(email);
                 selectedUser.setType(type);
                 utilisateurDAO.update(selectedUser);
-            }
+              
+            } 
             loadUserData();
             clearForm();
         }
@@ -161,13 +150,11 @@ public class UserController {
     @FXML
     public void handleBack(ActionEvent event) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); // Path to your main menu FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/main.fxml")); 
         Parent root = loader.load();
         
-        // Get the current stage
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
-        // Set the new scene without closing the stage
         stage.setScene(new Scene(root));
     } catch (IOException e) {
         e.printStackTrace();

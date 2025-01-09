@@ -17,10 +17,7 @@ public class MainUserController {
         loadNewStage("EventUser.fxml", event);
     }
 
-    @FXML
-    public void checkRooms(ActionEvent event) {
-        loadNewStage("RoomUser.fxml", event);
-    }
+   
 
 
     @FXML
@@ -30,21 +27,18 @@ public class MainUserController {
 
     private void loadNewStage(String fxmlFile, ActionEvent event) {
         try {
-            // Load the new FXML file (e.g., user.fxml, rooms.fxml, etc.)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/" + fxmlFile));
             Parent root = loader.load();
             
-            // Create a new stage for the new FXML file
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
 
-            // Close the current stage (window) and open the new one
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            stage.show();  // Show the new stage
+            stage.show();  
         } catch (IOException e) {
-            e.printStackTrace();  // Handle potential exceptions
+            e.printStackTrace(); 
         }
     }
 }

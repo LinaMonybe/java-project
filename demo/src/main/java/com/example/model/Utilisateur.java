@@ -6,20 +6,15 @@ public class Utilisateur {
     private String prenom;
     private String email;
     private String type;
+    private String password;
 
-    // public Utilisateur(String nom,String prenom,String email,String type) {
-    //     this.nom =nom;
-    //     this.prenom= prenom;
-    //     this.email =email;
-    //     this.type =type;
-    // } 
-
-    public Utilisateur(int id , String nom,String prenom,String email,String type) {
+    public Utilisateur(int id , String nom,String prenom,String email,String type , String password) {
         this.id=id;
         this.nom =nom;
         this.prenom= prenom;
         this.email =email;
         this.type =type;
+        this.password=password;
     } 
 
     public int getId() {
@@ -60,5 +55,11 @@ public class Utilisateur {
 
     public void setType(String type) {
         this.type= type;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password= password;
     }
 }

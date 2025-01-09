@@ -12,15 +12,14 @@ public class EvenementDAOTest {
     public void testGetAll() {
         EvenementDAO evenementDAO = new EvenementDAO();
         
-        // Call the method to get all evenements
+       
         List<Evenement> evenements = evenementDAO.getAll();
         
-        // Assert the size of the list (assuming you expect a certain number of evenements in the DB)
-        assertEquals(1, evenements.size()); // Adjust the expected size based on your DB
+       
+        assertEquals(1, evenements.size()); 
         
-        // Optionally, assert the properties of the first Evenement object
         assertEquals("Evenement 1", evenements.get(0).getNomEvent());
         assertEquals("Description de l'événement 1", evenements.get(0).getDescription());
-        assertEquals("2023-10-01", evenements.get(0).getDateEvent()); // Adjust the date format as needed
+        assertEquals("2023-10-01", evenements.get(0).getDateEvent()); 
     }
 }

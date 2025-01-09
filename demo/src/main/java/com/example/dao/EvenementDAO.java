@@ -16,20 +16,15 @@ public class EvenementDAO implements GenericDao<Evenement> {
     @Override
     public void add(Evenement entity) {
         String query = "INSERT INTO events (name, event_date, description, user_id) VALUES (?, ?, ?, ?)";
-        
+         
         try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
              PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, entity.getNomEvent());
-            stmt.setDate(2, new java.sql.Date(entity.getDateEvent().getTime()));
+            stmt.setString(1, entity.getNomEvent());    
+            stmt.setDate(2, Date.valueOf(entity.getDateEvent()));
             stmt.setString(3, entity.getDescription());
             stmt.setInt(4, entity.getIdUser());
             stmt.executeUpdate();
-
-            // Commit the transaction
-            conn.commit();
         } catch (SQLException e) {
-            // Handle SQL exception
             e.printStackTrace();
         }
     }
@@ -39,20 +34,19 @@ public class EvenementDAO implements GenericDao<Evenement> {
         String query = "SELECT * FROM events WHERE id=?";
         Evenement evenement = null;
         
-        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
+        try (Connection conn =DriverManager.getConnection("jdbc:postgresql://localhost:5432/Projet", "postgres", "lina123");
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String name = rs.getString("name");
-                Date date = rs.getDate("event_date");
+                String date = rs.getString("event_date").toString();
                 String description = rs.getString("description");
                 int userId = rs.getInt("user_id");
                 evenement = new Evenement(id, name, date, description, userId);
             }
         } catch (SQLException e) {
-            // Handle SQL exception
             e.printStackTrace();
         }
         return evenement;
@@ -70,13 +64,12 @@ public class EvenementDAO implements GenericDao<Evenement> {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                Date date = rs.getDate("event_date");
+                String date = rs.getString("event_date").toString();
                 String description = rs.getString("description");
                 int userId = rs.getInt("user_id");
                 events.add(new Evenement(id, name, date, description, userId));
             }
         } catch (SQLException e) {
-            // Handle SQL exception
             e.printStackTrace();
         }
         return events;
@@ -90,16 +83,14 @@ public class EvenementDAO implements GenericDao<Evenement> {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, entity.getNomEvent());
-            stmt.setDate(2, new java.sql.Date(entity.getDateEvent().getTime()));
+            stmt.setString(2, entity.getDateEvent());
+            stmt.setDate(2, Date.valueOf(entity.getDateEvent()));
             stmt.setString(3, entity.getDescription());
             stmt.setInt(4, entity.getIdUser());
             stmt.setInt(5, entity.getIdEvent());
             stmt.executeUpdate();
-
-            // Commit the transaction
             conn.commit();
         } catch (SQLException e) {
-            // Handle SQL exception
             e.printStackTrace();
         }
     }
@@ -113,11 +104,8 @@ public class EvenementDAO implements GenericDao<Evenement> {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
-            // Commit the transaction
             conn.commit();
         } catch (SQLException e) {
-            // Handle SQL exception
             e.printStackTrace();
         }
     }

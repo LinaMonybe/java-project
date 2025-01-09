@@ -1,51 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.input.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.main.ReservationController">
+<Pane prefHeight="567.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.main.ReservationController">
     <children>
-        <!-- Title -->
-        <Label text="Reservation Management" layoutX="250" layoutY="10" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <Label layoutX="190.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Reservation Management" textFill="#12776b" />
 
-        <!-- Table for displaying reservations -->
-        <TableView fx:id="reservationTable" layoutX="50" layoutY="100" prefWidth="700" prefHeight="300">
+        <TableView fx:id="reservationTable" layoutX="58.0" layoutY="66.0" prefHeight="300" prefWidth="549.0">
             <columns>
-                <TableColumn fx:id="colId" text="ID" prefWidth="50" />
-                <TableColumn fx:id="colUserId" text="User ID" prefWidth="100" />
-                <TableColumn fx:id="colEventId" text="Event ID" prefWidth="100" />
-                <TableColumn fx:id="colRoomId" text="Room ID" prefWidth="100" />
-                <TableColumn fx:id="colFieldId" text="Field ID" prefWidth="100" />
-                <TableColumn fx:id="colReservationDate" text="Reservation Date" prefWidth="150" />
+                <TableColumn fx:id="colUser" prefWidth="100" text="User " />
+                <TableColumn fx:id="colEvent" prefWidth="100" text="Event " />
+                <TableColumn fx:id="colRoom" prefWidth="100" text="Room " />
+                <TableColumn fx:id="colField" prefWidth="100" text="Field " />
+                <TableColumn fx:id="colReservationDate" prefWidth="150" text="Reservation Date" />
             </columns>
         </TableView>
+        <!-- <Button fx:id="btnUpdate" layoutX="284.0" layoutY="401.0" onAction="#handleUpdateReservation" text="Select" /> -->
+        <Button fx:id="btnDelete" layoutX="150.0" layoutY="441.0" onAction="#handleDeleteReservation" text="Delete Reservation" />
 
-        <!-- User Input Fields -->
-        <Label text="User ID:" layoutX="50" layoutY="420" />
-        <TextField fx:id="txtUserId" layoutX="150" layoutY="420" prefWidth="200" />
-
-        <Label text="Event ID:" layoutX="50" layoutY="460" />
-        <TextField fx:id="txtEventId" layoutX="150" layoutY="460" prefWidth="200" />
-
-        <Label text="Room ID:" layoutX="50" layoutY="500" />
-        <TextField fx:id="txtRoomId" layoutX="150" layoutY="500" prefWidth="200" />
-
-        <Label text="Field ID:" layoutX="50" layoutY="540" />
-        <TextField fx:id="txtFieldId" layoutX="150" layoutY="540" prefWidth="200" />
-
-        <Label text="Reservation Date (yyyy-MM-dd):" layoutX="50" layoutY="580" />
-        <TextField fx:id="txtReservationDate" layoutX="200" layoutY="580" prefWidth="150" />
-
-        <!-- Buttons for actions -->
-        <Button fx:id="btnSave" text="Save" layoutX="50" layoutY="620" onAction="#handleSaveReservation" />
-        <Button fx:id="btnCancel" text="Cancel" layoutX="150" layoutY="620" onAction="#handleRefresh" />
-        <Button text="Back" layoutX="650" layoutY="620" onAction="#handleBack" />
-
-        <!-- Add, Update, Delete Actions -->
-        <Button text="Add Reservation" layoutX="400" layoutY="420" onAction="#handleAddReservation" />
-        <Button text="Update Reservation" layoutX="400" layoutY="460" onAction="#handleUpdateReservation" />
-        <Button text="Delete Reservation" layoutX="400" layoutY="500" onAction="#handleDeleteReservation" />
+        <!-- <DatePicker fx:id="DateReserve" layoutX="58.0" layoutY="401.0" prefHeight="25.0" prefWidth="208.0" promptText="Date " /> -->
+      <Button fx:id="back" layoutX="17.0" layoutY="528.0" mnemonicParsing="false" onAction="#backToMain" text="Back" />
+      <!-- <Button fx:id="btnChange" layoutX="383.0" layoutY="401.0" onAction="#handleUpdateDate" text="Change Date" /> -->
     </children>
-</AnchorPane>
+</Pane>

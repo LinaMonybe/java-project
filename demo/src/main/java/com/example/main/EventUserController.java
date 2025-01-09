@@ -36,12 +36,10 @@ public class EventUserController {
 
     @FXML
     public void initialize() {
-        // Set up table columns
         colEventName.setCellValueFactory(new PropertyValueFactory<>("nomEvent"));
         colEventDate.setCellValueFactory(new PropertyValueFactory<>("dateEvent"));
         colEventDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        // Load data into the table
         loadEvenementData();
     }
 
@@ -53,13 +51,11 @@ public class EventUserController {
      @FXML
     public void handleBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/MainUser.fxml")); // Ensure path is correct
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/MainUser.fxml")); 
             Parent root = loader.load();
     
-            // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     
-            // Set the new scene without closing the stage
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();

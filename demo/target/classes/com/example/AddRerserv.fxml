@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.main.AddRsereveController">
+   <children>
+<MenuButton fx:id="UsersS" layoutX="20.0" layoutY="187.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="255.0" text="Select User">
+
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+         <font>
+            <Font size="13.0" />
+         </font>
+      </MenuButton>
+      <Label layoutX="244.0" layoutY="14.0" text="Rservation" textFill="#20757b">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Button fx:id="BackToRoom" layoutX="20.0" layoutY="353.0" mnemonicParsing="false" onAction="#Back" text="Back " />
+    <Button fx:id="reserve" layoutX="515.0" layoutY="315.0" mnemonicParsing="false" onAction="#addnewReseve" text="Reserve" />
+      <DatePicker fx:id="ReserveDate" layoutX="20.0" layoutY="254.0" prefHeight="25.0" prefWidth="255.0" promptText="Reserve date" />
+      <Line endX="100.0" layoutX="294.0" layoutY="45.0" startX="-100.0" stroke="#1e909d" />
+      <MenuButton fx:id="EventSelect" layoutX="20.0" layoutY="116.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="255.0" text="Select Event">
+
+         <items>
+            <MenuItem mnemonicParsing="false" text="Action 1" />
+            <MenuItem mnemonicParsing="false" text="Action 2" />
+         </items>
+         <font>
+            <Font size="13.0" />
+         </font>
+      </MenuButton>
+      <Button fx:id="EventList" layoutX="294.0" layoutY="117.0" mnemonicParsing="false" onAction="#BackToList" text="Event list " />
+      <Label layoutX="20.0" layoutY="75.0" text="create new reservation" textFill="#20757b">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Button fx:id="Userslist" layoutX="294.0" layoutY="188.0" mnemonicParsing="false" onAction="#BackToUserList" text="Users list " />
+   </children>
+</Pane>
